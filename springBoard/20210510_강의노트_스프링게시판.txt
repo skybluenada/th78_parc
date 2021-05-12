@@ -1,0 +1,107 @@
+2021-05-10
+---------------------------------------
+
+문서이름 : 20210510_스프링보드.txt
+springBoard\WebContent\20210510_스프링보드.txt
+
+파일 업로드 및 페이징 처리 : 10시간 
+
+워크스페이스 
+	el_sb
+	el_sb_work
+프로젝트명 
+	springBoard
+
+
+개발환경 
+------------
+
+1. jdk
+	jdk 1.8 
+2. was
+	tomcat 8.5
+		Apache Tomcat Version 8.5.61
+		Servlet spec 3.1
+		Jsp spec 2.3
+		el spec 3.0
+		web socket 1.1
+3. ide
+	eclipse202006
+4. spring
+	library : 3.2.9, project : 4.3.16
+	sts : Spring Tool 3 : 3.9.14.RELEASE
+5. mybatis
+	libaray : mybatis-3.2.4
+	spring-mybatis : mybatis-spring-1.2.2
+6. log
+	log4j-1.2.17
+7. file upload
+	cos.jar 
+8. client browser : chrom 최신버전 
+9. 프로젝트 패키지명 : springBoard
+
+게시판 항목
+글번호	sbnum : 채번로직 : B0001
+제목		sbsubject
+작성자	sbname
+내용		sbcontent
+파일		sbfile
+비밀번호	sbpw
+삭제여부	deleteyn
+등록일	insertdate
+수정일	updatedate
+
+CREATE TABLE SPRING_BOARD(
+	SBNUM VARCHAR2(20) PRIMARY KEY 
+   ,SBSUBJECT VARCHAR2(200) NOT NULL
+   ,SBNAME VARCHAR2(100) NOT NULL
+   ,SBCONTENT VARCHAR2(2000)
+   ,SBFILE VARCHAR2(300)
+   ,SBPW VARCHAR2(300)
+   ,DELETEYN VARCHAR2(1) NOT NULL
+   ,INSERTDATE DATE
+   ,UPDATEDATE DATE 
+);
+
+
+패키지
+a.b.c.com.board.controller
+	BoardController
+
+a.b.c.com.board.service
+	BoardService
+		public List<BoardVO> boardSelect(BoardVO bvo);
+		public List<BoardVO> boardSelectAll(BoardVO bvo);
+		public int boardInsert(BoardVO bvo);
+		public int boardUpdate(BoardVO bvo);
+		public int boardDelete(BoardVO bvo);
+	BoardServiceImpl
+
+a.b.c.com.board.dao
+	BoardDAO
+	BoardDAOImpl
+a.b.c.com.board.vo
+	BoardVO
+
+a.b.c.com.common.controller
+	CommonController
+a.b.c.com.common.service
+	CommonService
+	CommonServiceImpl
+a.b.c.com.common.dao
+	CommonDAO
+	CommonDAOImpl
+
+/mybatisconfig/mybatis-config.xml
+/mybatisquery/board.xml
+/mybatisquery/chabun.xml
+
+프론트 
+index.jsp
+/WEB-INF/views
+board.jsp
+boardInsert.jsp
+boardUpdate.jsp
+boardDelete.jsp
+boardSelect.jsp
+boardSelectAll.jsp

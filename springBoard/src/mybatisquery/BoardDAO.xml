@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="a.b.c.com.board.dao.BoardDAO">
+   
+   <select id="boardSelectAll" resultType="boardvo">
+      SELECT
+      SBNUM
+      ,SBSUBJECT
+      ,SBNAME
+      ,SBCONTENT
+      ,SBFILE
+      ,SBPW
+      ,DELETEYN DELETEYN
+      ,TO_CHAR(TO_DATE(INSERTDATE), 'YYYY-MM-DD')
+      ,TO_CHAR(TO_DATE(UPDATEDATE), 'YYYY-MM-DD')
+      FROM SPRING_BOARD
+   </select>
+
+   <select id="boardSelect" resultType="boardvo">
+      SELECT
+             SBNUM       
+            ,SBSUBJECT
+            ,SBNAME
+            ,SBCONTENT
+            ,SBFILE
+            ,SBPW
+            ,DELETEYN
+            ,TO_CHAR(INSERTDATE,'YYYY-MM-DD') INSERTDATE
+            ,TO_CHAR(UPDATEDATE,'YYYY-MM-DD') UPDATEDATE
+      FROM    SPRING_BOARD
+      WHERE   SBNUM = #{sbnum, jdbcType=VARCHAR}
+      AND      DELETEYN = 'Y'
+   </select>
+   
+   <insert id="boardInsert" parameterType="boardvo">
+   <![CDATA[
+      INSERT INTO SPRING_BOARD(
+             SBNUM       
+            ,SBSUBJECT
+            ,SBNAME
+            ,SBCONTENT
+            ,SBFILE
+            ,SBPW
+            ,DELETEYN
+            ,INSERTDATE
+            ,UPDATEDATE
+            )
+      VALUES(
+             #{sbnum, jdbcType=VARCHAR}
+            ,#{sbsubject, jdbcType=VARCHAR}
+            ,#{sbname, jdbcType=VARCHAR}
+            ,#{sbcontent, jdbcType=VARCHAR}
+            ,#{sbfile, jdbcType=VARCHAR}
+            ,#{sbpw, jdbcType=VARCHAR}
+            ,'Y'
+            ,SYSDATE
+            ,SYSDATE
+            )
+   ]]>
+   </insert>
+   
+   <update id="boardUpdate" parameterType="boardVO">
+      UPDATE    SPRING_BOARD   
+      SET
+             SBSUBJECT = #{sbsubject}
+            ,SBCONTENT = #{sbcontent}
+            ,SBFILE      = #{sbfile}
+            ,UPDATEDATE = SYSDATE
+      WHERE    SBNUM = #{sbnum}       
+      AND       DELETEYN = 'Y'
+   </update>
+   
+   <update id="boardDelete" parameterType="boardVO">
+      UPDATE    SPRING_BOARD
+      SET
+             DELETEYN = 'N'
+            ,UPDATEDATE = SYSDATE
+      WHERE    SBNUM = #{sbnum, jdbcType=VARCHAR}       
+      AND       DELETEYN = 'Y'
+   </update>
+
+   <!-- 총 게시글 갯수 출력 -->
+   <select id="countBoard" resultType="int">
+      SELECT COUNT(*) FROM SPRING_BOARD
+   </select>
+   
+   <!-- 페이징 처리 후 게시글 조회 -->
+   <select id="pselectBoard" resultType="boardvo">
+      SELECT * 
+         FROM (
+            SELECT ROWNUM RN, A.* 
+               FROM (
+                     SELECT * 
+                     FROM SPRING_BOARD 
+                     ORDER BY 1 DESC 
+                     ) A
+               )
+      WHERE RN BETWEEN #{start} AND #{end}
+   </select>
+   
+</mapper>
+
+
